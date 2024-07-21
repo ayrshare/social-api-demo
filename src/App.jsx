@@ -6,7 +6,8 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Image
+  Image,
+  Link
 } from "@chakra-ui/react";
 import SocialPostingForm from "./components/SocialPostingForm";
 
@@ -61,7 +62,18 @@ function App() {
                 • Use relevant hashtags to increase visibility
                 <br />
                 • Include eye-catching images when possible
-                <br />• Schedule posts for optimal times
+                <br />
+                • Schedule posts for optimal times
+                <br />• Learn more at{" "}
+                <Link
+                  href="https://www.ayrshare.com"
+                  isExternal
+                  color="blue.500"
+                  textDecoration="none"
+                  _hover={{ textDecoration: "underline" }}
+                >
+                  Ayrshare
+                </Link>
               </Text>
             </Box>
           </Box>
