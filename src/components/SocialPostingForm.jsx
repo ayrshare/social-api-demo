@@ -27,11 +27,7 @@ import {
   useDisclosure,
   Spinner,
   SimpleGrid,
-  Card,
-  CardBody,
-  CardFooter,
-  Badge,
-  Link
+  Select
 } from "@chakra-ui/react";
 import {
   FaFacebookF,
@@ -39,141 +35,13 @@ import {
   FaImage,
   FaCalendarAlt,
   FaLinkedinIn,
-  FaTimes,
-  FaExternalLinkAlt,
-  FaCheckCircle,
-  FaExclamationTriangle
+  FaTimes
 } from "react-icons/fa";
 import { FaTiktok } from "react-icons/fa6";
 import { SiX } from "react-icons/si";
+import PostTimelineCard from "./PostTimeLineCard";
 
 const baseURL = "http://localhost:3001";
-
-const PostTimelineItem = ({ post }) => {
-  const bgColor = useColorModeValue("white", "gray.700");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
-  const statusBgColor = useColorModeValue("gray.100", "gray.600");
-
-  const socialColors = {
-    facebook: "#1877F2",
-    instagram: "#E4405F",
-    linkedin: "#0A66C2",
-    tiktok: "#000000",
-    x: "#8d969e",
-    twitter: "#8d969e"
-  };
-
-  const renderSocialBadge = (platform) => {
-    const postId = post.postIds.find(
-      (p) => p.platform.toLowerCase() === platform.toLowerCase()
-    );
-    const content = (
-      <HStack spacing={1}>
-        <Text fontSize="xs">
-          {platform.charAt(0).toUpperCase() + platform.slice(1).toLowerCase()}
-        </Text>
-        {postId && postId.postUrl && <FaExternalLinkAlt size="0.6em" />}
-      </HStack>
-    );
-
-    return postId && postId.postUrl ? (
-      <Link
-        href={postId.postUrl}
-        isExternal
-        _hover={{ textDecoration: "none" }}
-      >
-        <Badge
-          bg={socialColors[platform]}
-          color="white"
-          px={2}
-          py={1}
-          borderRadius="full"
-          fontSize="xs"
-          fontWeight="medium"
-        >
-          {content}
-        </Badge>
-      </Link>
-    ) : (
-      <Badge
-        bg={socialColors[platform]}
-        color="white"
-        px={2}
-        py={1}
-        borderRadius="full"
-        fontSize="xs"
-        fontWeight="medium"
-      >
-        {content}
-      </Badge>
-    );
-  };
-
-  const renderStatusIndicator = () => {
-    const isSuccess = post.status === "success";
-    return (
-      <Flex
-        align="center"
-        bg={statusBgColor}
-        px={3}
-        py={2}
-        borderRadius="md"
-        mb={2}
-      >
-        {isSuccess ? (
-          <FaCheckCircle color="green" size="1em" />
-        ) : (
-          <FaExclamationTriangle color="red" size="1em" />
-        )}
-        <Text
-          ml={2}
-          fontSize="sm"
-          fontWeight="medium"
-          color={isSuccess ? "green.500" : "red.500"}
-        >
-          {isSuccess ? "Posted successfully" : "Error posting"}
-        </Text>
-      </Flex>
-    );
-  };
-
-  return (
-    <Card bg={bgColor} borderColor={borderColor} borderWidth="1px">
-      <CardBody>
-        <Text fontSize="sm" mb={2}>
-          {post.post}
-        </Text>
-        {post.mediaUrls && post.mediaUrls.length > 0 && (
-          <Box maxH="200px" overflow="hidden" borderRadius="md" mb={2}>
-            {post.mediaUrls[0].endsWith(".mp4") ? (
-              <video
-                src={post.mediaUrls[0]}
-                controls
-                width="100%"
-                height="auto"
-              />
-            ) : (
-              <Image
-                src={post.mediaUrls[0]}
-                alt="Post media"
-                objectFit="cover"
-                width="100%"
-              />
-            )}
-          </Box>
-        )}
-      </CardBody>
-      <CardFooter>
-        <VStack align="stretch" width="100%" spacing={2}>
-          {renderStatusIndicator()}
-          <Wrap spacing={2}>
-            {post.platforms.map((platform) => renderSocialBadge(platform))}
-          </Wrap>
-        </VStack>
-      </CardFooter>
-    </Card>
-  );
-};
 
 const SocialPostingForm = () => {
   const [post, setPost] = useState({ text: "", media: null });
@@ -190,6 +58,7 @@ const SocialPostingForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [postHistory, setPostHistory] = useState([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("all");
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -336,6 +205,11 @@ const SocialPostingForm = () => {
     return isAnyNetworkSelected && isTextEntered;
   }, [networks, post.text]);
 
+  const filteredPostHistory = useMemo(() => {
+    if (statusFilter === "all") return postHistory;
+    return postHistory.filter((post) => post.status === statusFilter);
+  }, [postHistory, statusFilter]);
+
   return (
     <Box>
       <Box
@@ -457,15 +331,33 @@ const SocialPostingForm = () => {
       </Box>
 
       <Box mt={8}>
-        <Text fontSize="3xl" fontWeight="bold" mb={4}>
-          Post Timeline
-        </Text>
+        <Flex justify="space-between" align="center" mb={4}>
+          <Text fontSize="3xl" fontWeight="bold">
+            Post Timeline
+          </Text>
+          <Select
+            width="200px"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="all">All Posts</option>
+            <option value="success">Successful Posts</option>
+            <option value="error">Failed Posts</option>
+          </Select>
+        </Flex>
         {isLoadingHistory ? (
           <Spinner />
         ) : (
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
-            {postHistory?.map((post) => (
-              <PostTimelineItem key={post.id} post={post} />
+            {filteredPostHistory.map((post) => (
+              <PostTimelineCard
+                key={
+                  post.id ||
+                  post._id ||
+                  `${post.createdAt}-${post.platforms.join("-")}`
+                }
+                post={post}
+              />
             ))}
           </SimpleGrid>
         )}
