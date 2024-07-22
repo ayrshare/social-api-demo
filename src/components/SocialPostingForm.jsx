@@ -40,14 +40,7 @@ import {
 import { FaTiktok } from "react-icons/fa6";
 import { SiX } from "react-icons/si";
 import PostTimelineCard from "./PostTimeLineCard";
-
-const currentDomain = window.location.hostname;
-let baseURL;
-if (currentDomain.startsWith("demo")) {
-  baseURL = `https://${currentDomain.replace("demo", "demo-be")}`;
-} else {
-  baseURL = "http://localhost:3001";
-}
+import { baseURL } from "../utils/constants";
 
 const SocialPostingForm = () => {
   const [post, setPost] = useState({ text: "", media: null });

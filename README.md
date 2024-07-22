@@ -1,6 +1,8 @@
 # Social API Demo
 
-The Social API Demo is a web application that allows users to compose, schedule, and post content to multiple social media platforms simultaneously. Built with React and Node.js, it leverages the Ayrshare API to manage social media posts across various networks. It is built upon [Ayrshare's Social Media API](https://www.ayrshare.com)
+The Social API Demo is a web application that allows users to compose, schedule, and post content to multiple social media platforms simultaneously. If you have a Business Plan, you can also allow your user to link their social accounts.
+
+Built with React and Node.js, it leverages the Ayrshare API to manage social media posts across various networks. It is built upon [Ayrshare's Social Media API](https://www.ayrshare.com)
 
 ## Features
 
@@ -12,7 +14,7 @@ The Social API Demo is a web application that allows users to compose, schedule,
 - Responsive design for desktop and mobile use.
 - See [Ayrshare's API Docs](https://docs.ayrshare.com) for more info.
 
-![Alt Social API Demo](https://img.ayrshare.com/012/ayrshare-demo-1.jpg)
+![Alt Social API Demo](https://img.ayrshare.com/012/ayrshare-demo-2.jpg)
 
 ## Prerequisites
 
@@ -46,9 +48,17 @@ Before you begin, ensure you have met the following requirements:
    AYRSHARE_API_KEY=your_api_key_here
    ```
 
+4. If you have an Ayrshare Business Plan, you can set up the ability for your users to link their social accounts. Use the data provides in your Business integration package. In the `.env` file add:
+
+   ```markdown
+   AYRSHARE_DOMAIN=your_domain
+   AYRSHARE_PROFILE_KEY=your_users_profile_key
+   AYRSHARE_PRIVATE_KEY=./privatekeys/private.pem
+   ```
+
 ## Configuration
 
-1. Frontend: Update the `baseURL` in `src/components/SocialPostingForm.jsx` if your functions are not running on `http://localhost:3001`.
+1. Frontend: Update the `baseURL` in `src/utils/constants.js` if your functions are not running on `http://localhost:3001`.
 
 2. Backend: Update the `corsOptions` in `server.js`. Currernly all domains are allows and is not recommended for production.
 

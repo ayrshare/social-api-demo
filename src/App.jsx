@@ -6,10 +6,10 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Image,
-  Link
+  Image
 } from "@chakra-ui/react";
 import SocialPostingForm from "./components/SocialPostingForm";
+import RightSideNav from "./components/RightSideNav";
 
 function App() {
   const bgColor = useColorModeValue("gray.50", "gray.900");
@@ -31,7 +31,7 @@ function App() {
               Social API Demo
             </Heading>
             <Image
-              src="https://img.ayrshare.com/012/ayrshare-logo-lg.png"
+              src="https://img.ayrshare.com/012/your-logo.jpg"
               alt="Ayrshare Logo"
               height="40px"
               objectFit="contain"
@@ -52,30 +52,7 @@ function App() {
             <SocialPostingForm />
           </Box>
           <Box w={{ base: "full", md: "320px" }}>
-            <Box bg="white" borderRadius="md" p="6" boxShadow="sm">
-              <Heading as="h3" size="md" mb="4">
-                Tips
-              </Heading>
-              <Text color="gray.600" fontSize="sm">
-                • Keep your posts concise and engaging
-                <br />
-                • Use relevant hashtags to increase visibility
-                <br />
-                • Include eye-catching images when possible
-                <br />
-                • Schedule posts for optimal times
-                <br />• Learn more at{" "}
-                <Link
-                  href="https://www.ayrshare.com"
-                  isExternal
-                  color="blue.500"
-                  textDecoration="none"
-                  _hover={{ textDecoration: "underline" }}
-                >
-                  Ayrshare
-                </Link>
-              </Text>
-            </Box>
+            <RightSideNav />
           </Box>
         </Flex>
       </Container>

@@ -137,6 +137,77 @@ app.get("/api/post-history", async (req, res) => {
   }
 });
 
+const readPrivateKey = async (privateKeyPath) => {
+  try {
+    const privateKey = await fs.readFileSync(privateKeyPath, {
+      encoding: "utf8"
+    });
+    return privateKey.trim();
+  } catch (error) {
+    console.error("Error reading private key file:", error);
+    throw new Error("Failed to read private key file");
+  }
+};
+
+// Updated endpoint to generate JWT URL with required parameters
+app.get("/api/generate-jwt", async (req, res) => {
+  try {
+    const privateKey = await readPrivateKey(env.AYRSHARE_PRIVATE_KEY);
+
+    const jwtData = {
+      domain: env.AYRSHARE_DOMAIN,
+      privateKey,
+      profileKey: env.AYRSHARE_PROFILE_KEY,
+      verify: true
+    };
+
+    const response = await axios.post(
+      `${BASE_AYRSHARE}/profiles/generateJWT`,
+      jwtData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${env.AYRSHARE_API_KEY}`
+        }
+      }
+    );
+
+    res.json({ url: response.data.url });
+  } catch (error) {
+    console.error(
+      "Error generating JWT URL:",
+      error.response?.data || error.message
+    );
+    res.status(500).json({ error: "Failed to generate JWT URL" });
+  }
+});
+
+// New endpoint to fetch user's active social accounts
+app.get("/api/user-accounts", async (req, res) => {
+  try {
+    const response = await axios.get(`${BASE_AYRSHARE}/user`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${env.AYRSHARE_API_KEY}`
+      }
+    });
+
+    const { displayNames } = response.data;
+    const accountsWithUrls = displayNames.map((account) => ({
+      name: account.platform,
+      profileUrl: account.profileUrl
+    }));
+
+    res.json({ activeSocialAccounts: accountsWithUrls });
+  } catch (error) {
+    console.error(
+      "Error fetching user accounts:",
+      error.response?.data || error.message
+    );
+    res.status(500).json({ error: "Failed to fetch user accounts" });
+  }
+});
+
 const PORT = env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
