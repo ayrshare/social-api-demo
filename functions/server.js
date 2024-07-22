@@ -11,8 +11,10 @@ const BASE_AYRSHARE = "https://api.ayrshare.com/api";
 
 config(); // Load environment variables
 
+const corsOptions = {};
+
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
 const upload = multer({ dest: "uploads/" });
 
 // WARNING: This CORS configuration allows all origins and is not secure for production use

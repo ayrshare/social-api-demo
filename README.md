@@ -1,6 +1,6 @@
-# SocialPost
+# Social API Demo
 
-SocialPost is a web application that allows users to compose, schedule, and post content to multiple social media platforms simultaneously. Built with React and Node.js, it leverages the Ayrshare API to manage social media posts across various networks. It is built upon [Ayrshare's Social Media API](https://www.ayrshare.com)
+The Social API Demo is a web application that allows users to compose, schedule, and post content to multiple social media platforms simultaneously. Built with React and Node.js, it leverages the Ayrshare API to manage social media posts across various networks. It is built upon [Ayrshare's Social Media API](https://www.ayrshare.com)
 
 ## Features
 
@@ -8,6 +8,7 @@ SocialPost is a web application that allows users to compose, schedule, and post
 - Schedule posts for future publication.
 - Post to multiple social networks (Facebook, Instagram, LinkedIn, TikTok, X/Twitter).
 - View post history and status.
+- Filter by success or error posts.
 - Responsive design for desktop and mobile use.
 - See [Ayrshare's API Docs](https://docs.ayrshare.com) for more info.
 
@@ -17,27 +18,27 @@ Before you begin, ensure you have met the following requirements:
 
 - Node.js (v18.0.0 or later)
 - npm (v8.0.0 or later)
-- An signed up [Ayrshare](https://app.ayrshare.com) and obtained an [Ayrshare API key](https://docs.ayrshare.com/rest-api/overview#watch-how-to-use-the-social-api)
+- An [Ayrshare](https://app.ayrshare.com) account and an [Ayrshare API key](https://docs.ayrshare.com/rest-api/overview#watch-how-to-use-the-social-api)
 
 ## Installation
 
 1. Clone the repository:
 
    ```markdown
-   git clone https://github.com/yourusername/socialpost.git
-   cd socialpost
+   git clone https://github.com/ayrshare/social-api-demo.git
+   cd social-api-demo
    ```
 
 2. Install dependencies for both frontend and backend:
 
    ```markdown
-   cd frontend
+   cd social-api-demo
    npm install
-   cd ../functions
+   cd functions
    npm install
    ```
 
-3. Create a `.env` file in the backend directory with your Ayrshare API key:
+3. Create a `.env` file in the functions directory with your Ayrshare API key:
 
    ```markdown
    AYRSHARE_API_KEY=your_api_key_here
@@ -45,23 +46,23 @@ Before you begin, ensure you have met the following requirements:
 
 ## Configuration
 
-1. Frontend: Update the `baseURL` in `src/components/SocialPostingForm.jsx` if your backend is not running on `http://localhost:3001`.
+1. Frontend: Update the `baseURL` in `src/components/SocialPostingForm.jsx` if your functions are not running on `http://localhost:3001`.
 
-2. Backend: Update the `corsOptions` in `server.js` if your frontend is not running on `http://localhost:5173`.
+2. Backend: Update the `corsOptions` in `server.js`. Currernly all domains are allows and is not recommended for production.
 
 ## Running the Application
 
 1. Start the backend server:
 
    ```markdown
-   cd backend
-   npm start
+   cd functions
+   npm run start
    ```
 
 2. In a new terminal, start the frontend development server:
 
    ```markdown
-   cd frontend
+   cd social-api-demo
    npm run dev
    ```
 
