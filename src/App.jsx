@@ -28,7 +28,7 @@ function App() {
         <Container maxW="container.xl">
           <Flex alignItems="center" height="16" justifyContent="space-between">
             <Heading as="h1" size="xl" color={headerColor}>
-              SocialPost
+              Social API Demo
             </Heading>
             <Image
               src="https://img.ayrshare.com/012/ayrshare-logo-lg.png"
