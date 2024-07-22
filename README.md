@@ -12,6 +12,8 @@ The Social API Demo is a web application that allows users to compose, schedule,
 - Responsive design for desktop and mobile use.
 - See [Ayrshare's API Docs](https://docs.ayrshare.com) for more info.
 
+![Alt Social API Demo](https://img.ayrshare.com/012/ayrshare-demo.jpg)
+
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
