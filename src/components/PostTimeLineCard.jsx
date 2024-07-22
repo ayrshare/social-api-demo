@@ -25,11 +25,11 @@ const PostTimelineCard = ({ post }) => {
 
   const socialColors = {
     facebook: "#1877F2",
-    instagram: "#E4405F",
+    instagram: "#d62976",
     linkedin: "#0A66C2",
     tiktok: "#000000",
-    x: "#8d969e",
-    twitter: "#8d969e"
+    x: "#000000",
+    twitter: "#000000"
   };
 
   const renderSocialBadge = (platform) => {
@@ -39,7 +39,10 @@ const PostTimelineCard = ({ post }) => {
     const content = (
       <HStack spacing={1}>
         <Text fontSize="xs">
-          {platform.charAt(0).toUpperCase() + platform.slice(1).toLowerCase()}
+          {platform === "twitter"
+            ? "X"
+            : platform.charAt(0).toUpperCase() +
+              platform.slice(1).toLowerCase()}
         </Text>
         {postId && postId.postUrl && <FaExternalLinkAlt size="0.6em" />}
       </HStack>
