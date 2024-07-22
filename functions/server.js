@@ -3,23 +3,42 @@ import multer from "multer";
 import axios from "axios";
 import { config } from "dotenv";
 import { env } from "process";
-import cors from "cors";
 import fs from "fs";
 import FormData from "form-data";
+import cors from "cors";
 
 const BASE_AYRSHARE = "https://api.ayrshare.com/api";
 
 config(); // Load environment variables
 
-const corsOptions = {
-  origin: "http://localhost:5173", // Allow only requests from your frontend
-  optionsSuccessStatus: 200
-};
-
 const app = express();
-app.use(cors(corsOptions));
-app.use(express.json());
+app.use(cors());
 const upload = multer({ dest: "uploads/" });
+
+// WARNING: This CORS configuration allows all origins and is not secure for production use
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
+app.use(express.json());
+
+console.warn(
+  "WARNING: Server is configured to accept CORS requests from all origins. This is not secure for production use."
+);
 
 async function uploadMediaToAyrshare(file) {
   try {
